@@ -107,6 +107,51 @@ endif
 
 include $(BUILD_EXECUTABLE)
 
+# make_ext4fs
+include $(CLEAR_VARS)
+LOCAL_MODULE := libmake_ext4fs_static
+LOCAL_MODULE_TAGS := optional
+LOCAL_CFLAGS := -Dmain=make_ext4fs_main
+LOCAL_SRC_FILES := \
+    ../../system/extras/ext4_utils/make_ext4fs_main.c \
+    ../../system/core/libcutils/canned_fs_config.c
+LOCAL_STATIC_LIBRARIES += libselinux
+include $(BUILD_STATIC_LIBRARY)
+
+# Minizip static library
+include $(CLEAR_VARS)
+LOCAL_MODULE := libminizip_static
+LOCAL_MODULE_TAGS := optional
+LOCAL_CFLAGS := -Dmain=minizip_main -D__ANDROID__ -DIOAPI_NO_64
+LOCAL_C_INCLUDES := external/zlib
+LOCAL_SRC_FILES := \
+    ../../external/zlib/src/contrib/minizip/ioapi.c \
+    ../../external/zlib/src/contrib/minizip/minizip.c \
+    ../../external/zlib/src/contrib/minizip/zip.c
+include $(BUILD_STATIC_LIBRARY)
+
+# Miniunz static library
+include $(CLEAR_VARS)
+LOCAL_MODULE := libminiunz_static
+LOCAL_MODULE_TAGS := optional
+LOCAL_CFLAGS := -Dmain=miniunz_main -D__ANDROID__ -DIOAPI_NO_64
+LOCAL_C_INCLUDES := external/zlib bionic/libc/include
+LOCAL_SRC_FILES := \
+    ../../external/zlib/src/contrib/minizip/ioapi.c \
+    ../../external/zlib/src/contrib/minizip/miniunz.c \
+    ../../external/zlib/src/contrib/minizip/unzip.c
+LOCAL_STATIC_LIBRARIES += libc
+include $(BUILD_STATIC_LIBRARY)
+
+# Reboot static library
+include $(CLEAR_VARS)
+LOCAL_MODULE := libreboot_static
+LOCAL_MODULE_TAGS := optional
+LOCAL_CFLAGS := -Dmain=reboot_main
+LOCAL_SRC_FILES := ../../system/core/reboot/reboot.c
+include $(BUILD_STATIC_LIBRARY)
+
+
 # recovery-persist (system partition dynamic executable run after /data mounts)
 # ===============================
 include $(CLEAR_VARS)
